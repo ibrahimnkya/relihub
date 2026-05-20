@@ -75,19 +75,17 @@ const Sidebar = () => {
   }
 
   const navItems = [
-    { to: '/dashboard', icon: Home, label: t('Nav.dashboard') }, // Dashboard is always visible
-    { to: '/trains', icon: Train, label: t('Nav.trains'), module: 'locomotive' },
-    { to: '/tanks', icon: Cylinder, label: t('Nav.tanks'), module: 'tanks' },
-    { to: '/flow-meters', icon: Gauge, label: t('Nav.meters'), module: 'meters' },
-    { to: '/fueling-sessions', icon: Fuel, label: t('Nav.sessions'), module: 'fueling' },
-    { to: '/reconciliation', icon: Scale, label: t('Nav.reconciliation'), module: 'recon' },
+    { to: '/dashboard', icon: Home, label: t('Nav.dashboard') }, // Operations Hub (always visible)
+    { to: '/tanks', icon: Cylinder, label: t('Nav.tanks'), module: 'tanks' }, // Storage & Inventory
+    { to: '/flow-meters', icon: Gauge, label: t('Nav.meters'), module: 'meters' }, // Flow Meters
+    { to: '/fueling-sessions', icon: Fuel, label: t('Nav.sessions'), module: 'fueling' }, // Fueling Sessions
     { divider: true },
-    { to: '/incidents', icon: AlertTriangle, label: t('Nav.alerts'), module: 'incidents' },
-    { to: '/reli-iq', icon: Brain, label: 'Reli-IQ', module: 'ai' },
-    { to: '/jobs', icon: Briefcase, label: 'Jobs' }, // Jobs might be shared
+    { to: '/incidents', icon: AlertTriangle, label: t('Nav.alerts'), module: 'incidents' }, // Incident Desk
+    { to: '/admin/users', icon: ShieldCheck, label: 'User Access Control', adminOnly: true } // User Access Control
   ]
 
   const filteredNavItems = navItems.filter(item => {
+    if (item.adminOnly && !isAdmin) return false
     if (!item.module) return true
     
     // Check global platform status first
@@ -125,40 +123,6 @@ const Sidebar = () => {
             collapsed={collapsed} 
           />
         ))}
-
-        {isAdmin && (
-          <div className="mt-4 pt-4 border-t border-brand-border">
-            <p className={`px-6 mb-2 text-[10px] font-bold text-brand-body/40 uppercase tracking-[0.2em] ${collapsed ? 'hidden' : 'block'}`}>System Administration</p>
-            
-            <SidebarItem 
-              to="/admin/companies" 
-              icon={Briefcase} 
-              label="Organization Setup" 
-              collapsed={collapsed} 
-            />
-            
-            <SidebarItem 
-              to="/admin/users" 
-              icon={ShieldCheck} 
-              label="User Access Control" 
-              collapsed={collapsed} 
-            />
-
-            <SidebarItem 
-              to="/admin/platform" 
-              icon={Settings} 
-              label="Platform Management" 
-              collapsed={collapsed} 
-            />
-
-            <SidebarItem 
-              to="/admin/logs" 
-              icon={AlertTriangle} 
-              label="Audit Logs" 
-              collapsed={collapsed} 
-            />
-          </div>
-        )}
       </nav>
 
       <div className="p-4 border-t border-brand-border bg-brand-surface mt-auto">
