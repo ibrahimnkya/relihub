@@ -4,9 +4,9 @@ jspm_packages/
 web_stage/
 
 # Build and Production Outputs
-dist/
-dist-ssr/
-build/
+
+
+#build/
 out/
 .next/
 .nuxt/
