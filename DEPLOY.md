@@ -1,6 +1,17 @@
-# Docker deployment (main branch — frontend only)
+# Deployment (main branch — frontend only)
 
-Production on **main** ships only the **React SPA** behind Nginx. The API runs elsewhere (default: `https://mafuta.mysafari.co.tz/api`).
+Production on **main** ships only the **React SPA**. The API runs elsewhere (default: `https://mafuta.mysafari.co.tz/api`).
+
+| Method | Guide |
+|--------|--------|
+| **Ubuntu + Nginx** (relihub.co.tz) | [deploy/UBUNTU.md](deploy/UBUNTU.md) |
+| **Docker** | This file (below) |
+
+Nginx site template: [deploy/nginx/relihub.co.tz.conf](deploy/nginx/relihub.co.tz.conf)
+
+---
+
+# Docker deployment
 
 No PostgreSQL or Express containers are started from this compose file.
 
@@ -32,7 +43,7 @@ Change `VITE_API_BASE_URL` in `.env` **before** `docker compose build` — Vite 
 
 ## Main-branch UI scope
 
-Routes on **main**: Operations Hub, Tanks, Flow Meters, Fueling Sessions, Incidents, User Access Control, Settings. Dev-only modules redirect to the dashboard.
+Routes on **main**: Operations Hub, Tanks, Flow Meters, Fueling Sessions, Incidents, Settings. Dev-only modules (including User Access Control) redirect to the dashboard.
 
 ## Operations
 

@@ -1,17 +1,11 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { 
   Home, 
-  Train, 
   Cylinder, 
   Gauge, 
   Fuel, 
-  Scale, 
   AlertTriangle, 
-  Settings,
-  ShieldCheck,
   LogOut,
-  Brain,
-  Briefcase
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { useAppStore } from '../../store/appStore'
@@ -58,13 +52,6 @@ const Sidebar = () => {
     return user.role_name || ''
   }
 
-  const roleStringFull = (getRoleString() || user?.name || user?.full_name || '').toLowerCase()
-  const isAdmin = roleStringFull.includes('admin') || 
-                  roleStringFull.includes('super') ||
-                  roleStringFull.includes('technical') ||
-                  roleStringFull.includes('system') ||
-                  (Array.isArray(user?.roles) && user.roles.some(r => r.slug?.includes('admin') || r.name?.toLowerCase().includes('admin')))
-
   const displayName = user?.name || user?.full_name || user?.username || 'Authorized User'
   const displayRole = getRoleString() || 'System Operator'
   const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
@@ -81,11 +68,9 @@ const Sidebar = () => {
     { to: '/fueling-sessions', icon: Fuel, label: t('Nav.sessions'), module: 'fueling' }, // Fueling Sessions
     { divider: true },
     { to: '/incidents', icon: AlertTriangle, label: t('Nav.alerts'), module: 'incidents' }, // Incident Desk
-    { to: '/admin/users', icon: ShieldCheck, label: 'User Access Control', adminOnly: true } // User Access Control
   ]
 
   const filteredNavItems = navItems.filter(item => {
-    if (item.adminOnly && !isAdmin) return false
     if (!item.module) return true
     
     // Check global platform status first
