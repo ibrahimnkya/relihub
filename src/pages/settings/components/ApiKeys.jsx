@@ -50,7 +50,7 @@ const ApiKeys = () => {
   }
 
   return (
-    <div className="bg-brand-card rounded-[10px] p-8 border border-brand-border shadow-sm space-y-8 animate-fade-in-up">
+    <div className="bg-brand-card rounded-[10px] p-4 sm:p-6 lg:p-8 border border-brand-border shadow-sm space-y-6 sm:space-y-8 animate-fade-in-up">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-black text-brand-heading mb-1 uppercase tracking-tight">Gateway API & Nodes</h2>

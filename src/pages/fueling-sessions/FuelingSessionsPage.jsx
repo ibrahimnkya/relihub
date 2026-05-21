@@ -222,23 +222,23 @@ const FuelingSessionsPage = () => {
   const activeSession = FUELING_SESSIONS?.find(s => s.status === 'matched')
 
   return (
-    <div className="space-y-6 animate-fade-in relative h-[calc(100vh-140px)] flex flex-col overflow-hidden">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in relative min-h-0 flex flex-col overflow-hidden">
       {/* Dynamic Header Section */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 flex-shrink-0 bg-white p-6 rounded-[15px] border border-slate-200 shadow-sm relative overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 flex-shrink-0 bg-white p-4 sm:p-6 rounded-[15px] border border-slate-200 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10">
-          <h1 className="text-2xl font-black text-brand-navy tracking-tight uppercase flex items-center gap-3">
-            <div className="h-10 w-10 bg-brand-blue/10 text-brand-blue rounded-[10px] flex items-center justify-center border border-brand-blue/20">
+          <h1 className="text-lg sm:text-2xl font-black text-brand-navy tracking-tight uppercase flex items-center gap-2 sm:gap-3">
+            <div className="h-9 w-9 sm:h-10 sm:w-10 bg-brand-blue/10 text-brand-blue rounded-[10px] flex items-center justify-center border border-brand-blue/20 flex-shrink-0">
               <Fuel size={20} />
             </div>
-            Fueling Sessions Hub
+            <span className="leading-tight">Fueling Sessions Hub</span>
           </h1>
-          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 ml-14">Real-time fueling activity and audit stream</p>
+          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 sm:ml-14">Real-time fueling activity and audit stream</p>
         </div>
         
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-3">
-            <div className="relative group min-w-[200px]">
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full lg:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
+            <div className="relative group w-full sm:min-w-[200px] sm:flex-1 lg:flex-initial">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-body group-focus-within:text-brand-blue transition-colors" size={16} />
               <input 
                 type="text" 
@@ -253,14 +253,14 @@ const FuelingSessionsPage = () => {
               value={depotFilter}
               onChange={(e) => setDepotFilter(e.target.value)}
               options={['All Terminals', 'Dar es Salaam', 'Morogoro', 'Dodoma']}
-              className="min-w-[160px]"
+              className="w-full sm:min-w-[160px]"
             />
           </div>
         </div>
       </div>
 
       {/* Premium KPI Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 flex-shrink-0">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 flex-shrink-0">
         <StatCard 
           label="Fueling Activity" 
           value={FUELING_SESSIONS.length} 
@@ -502,9 +502,9 @@ const FuelingSessionsPage = () => {
             onClick={() => setSelectedSession(null)} 
           />
           
-          <div className="relative w-full max-w-[500px] bg-white h-full shadow-2xl flex flex-col animate-slide-in-right overflow-hidden border-l border-slate-200">
+          <div className="relative w-full sm:max-w-[500px] bg-white h-full max-h-[100dvh] shadow-2xl flex flex-col animate-slide-in-right overflow-hidden border-l border-slate-200">
             {/* Session Header */}
-            <div className={`p-8 pb-12 text-white relative overflow-hidden transition-colors duration-500 ${selectedSession.status === 'suspicious' ? 'bg-red-600' : 'bg-brand-navy'}`}>
+            <div className={`p-5 sm:p-8 pb-8 sm:pb-12 text-white relative overflow-hidden transition-colors duration-500 ${selectedSession.status === 'suspicious' ? 'bg-red-600' : 'bg-brand-navy'}`}>
                <div className="absolute top-0 right-0 w-96 h-96 bg-brand-blue/10 rounded-full -mr-48 -mt-48 blur-3xl animate-pulse" />
                <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                
@@ -766,7 +766,7 @@ const FuelingSessionsPage = () => {
                )}
             </div>
             
-            <div className="p-8 bg-white border-t border-slate-100 flex items-center gap-4 mt-auto shadow-[0_-20px_30px_rgba(0,0,0,0.02)] relative z-20">
+            <div className="p-4 sm:p-8 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mt-auto shadow-[0_-20px_30px_rgba(0,0,0,0.02)] relative z-20">
                <button className="flex-1 py-4 bg-slate-50 border border-slate-200 text-brand-navy rounded-[14px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-slate-100 hover:border-brand-blue/30 transition-all shadow-sm flex items-center justify-center gap-3 group active:scale-95">
                  <Share2 size={16} className="text-slate-400 group-hover:scale-110 group-hover:text-brand-blue transition-all" /> 
                  Share Report

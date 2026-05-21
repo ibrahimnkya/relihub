@@ -43,7 +43,7 @@ Change `VITE_API_BASE_URL` in `.env` **before** `docker compose build` — Vite 
 
 ## Main-branch UI scope
 
-Routes on **main**: Operations Hub, Tanks, Flow Meters, Fueling Sessions, Incidents, Settings. Dev-only modules (including User Access Control) redirect to the dashboard.
+Routes on **main**: Operations Hub, Tanks, Flow Meters, Fueling Sessions, Incidents, Settings. Dev-only modules (including User Access Control) redirect to the dashboard. The shell is mobile-responsive (drawer nav, touch-friendly layouts).
 
 ## Operations
 

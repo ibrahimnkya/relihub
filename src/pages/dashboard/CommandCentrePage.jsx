@@ -166,7 +166,7 @@ const CommandCentrePage = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-140px)] flex flex-col space-y-4 animate-fade-in-up relative">
+    <div className="min-h-0 flex flex-col space-y-3 sm:space-y-4 animate-fade-in-up relative">
       {/* HUD Header */}
       <div className="flex flex-wrap items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">

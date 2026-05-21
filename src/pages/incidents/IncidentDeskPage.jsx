@@ -114,18 +114,18 @@ const IncidentDeskPage = () => {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in relative h-[calc(100vh-140px)] flex flex-col overflow-hidden">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in relative min-h-0 flex flex-col overflow-hidden">
       {/* Premium HUD Header */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 flex-shrink-0 bg-white p-6 rounded-[15px] border border-slate-200 shadow-sm relative overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 flex-shrink-0 bg-white p-4 sm:p-6 rounded-[15px] border border-slate-200 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10">
-          <h1 className="text-2xl font-black text-brand-navy tracking-tight uppercase flex items-center gap-3">
-            <div className="h-10 w-10 bg-brand-blue/10 text-brand-blue rounded-[10px] flex items-center justify-center border border-brand-blue/20">
+          <h1 className="text-lg sm:text-2xl font-black text-brand-navy tracking-tight uppercase flex items-center gap-2 sm:gap-3">
+            <div className="h-9 w-9 sm:h-10 sm:w-10 bg-brand-blue/10 text-brand-blue rounded-[10px] flex items-center justify-center border border-brand-blue/20 flex-shrink-0">
               <ShieldAlert size={20} />
             </div>
-            Incident Desk HUD
+            <span className="leading-tight">Incident Desk HUD</span>
           </h1>
-          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 ml-14">
+          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 sm:ml-14">
             Real-time monitoring of hardware anomalies and system variances
             {device?.lastSyncedAt && (
               <span className="ml-2 text-[10px] font-black text-slate-400 uppercase tracking-normal font-bold">
@@ -135,8 +135,8 @@ const IncidentDeskPage = () => {
           </p>
         </div>
         
-        <div className="flex flex-wrap items-center gap-4 relative z-10">
-          <div className="relative group min-w-[240px]">
+        <div className="flex flex-wrap items-center gap-4 relative z-10 w-full lg:w-auto">
+          <div className="relative group w-full sm:max-w-md lg:min-w-[240px]">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-body group-focus-within:text-brand-blue transition-colors" size={16} />
             <input 
               type="text" 
@@ -154,7 +154,7 @@ const IncidentDeskPage = () => {
         <div className="lg:col-span-4">
           <AlertRadar alertCount={alertStream.length} />
         </div>
-        <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <StatCard 
             label="Critical Breach" 
             value={allIncidents.filter(i => i.severity === 'critical').length} 
@@ -326,13 +326,13 @@ const IncidentDeskPage = () => {
       {selectedIncident && createPortal(
         <div className="fixed inset-0 z-[999] flex justify-end">
           <div className="absolute inset-0 bg-brand-navy/60 backdrop-blur-sm animate-fade-in" onClick={() => setSelectedIncident(null)}></div>
-          <div className="relative w-full max-w-[500px] bg-white h-full shadow-2xl flex flex-col animate-slide-in-right overflow-hidden border-l border-slate-200">
+          <div className="relative w-full sm:max-w-[500px] bg-white h-full max-h-[100dvh] shadow-2xl flex flex-col animate-slide-in-right overflow-hidden border-l border-slate-200">
             {/* Header */}
-            <div className={`p-8 pb-12 text-white relative overflow-hidden transition-colors duration-500 ${selectedIncident.severity === 'critical' ? 'bg-red-600' : 'bg-brand-navy'}`}>
+            <div className={`p-5 sm:p-8 pb-8 sm:pb-12 text-white relative overflow-hidden transition-colors duration-500 ${selectedIncident.severity === 'critical' ? 'bg-red-600' : 'bg-brand-navy'}`}>
               <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48 blur-3xl animate-pulse" />
               <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
               
-              <div className="relative z-10 flex flex-col gap-8">
+              <div className="relative z-10 flex flex-col gap-4 sm:gap-8">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-5">
                     <div className="h-16 w-16 bg-white/10 rounded-[18px] flex items-center justify-center backdrop-blur-xl border border-white/20 shadow-2xl group overflow-hidden relative">
@@ -356,7 +356,7 @@ const IncidentDeskPage = () => {
                   </button>
                 </div>
                 
-                <div className="flex items-center gap-8">
+                <div className="flex flex-wrap items-center gap-4 sm:gap-8">
                    <div className="flex flex-col gap-1.5">
                       <span className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em]">Detection Type</span>
                       <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full border border-white/10 backdrop-blur-md">
@@ -517,7 +517,7 @@ const IncidentDeskPage = () => {
             </div>
             
             {/* Action Footer */}
-            <div className="p-8 bg-white border-t border-slate-100 flex items-center gap-4 mt-auto shadow-[0_-20px_30px_rgba(0,0,0,0.02)] relative z-20">
+            <div className="p-4 sm:p-8 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mt-auto shadow-[0_-20px_30px_rgba(0,0,0,0.02)] relative z-20">
                <button className="flex-1 py-4 bg-slate-50 border border-slate-200 text-brand-navy rounded-[14px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-slate-100 hover:border-brand-blue/30 transition-all shadow-sm flex items-center justify-center gap-3 group active:scale-95">
                  <RefreshCw size={16} className="text-slate-400 group-hover:rotate-45 transition-all" /> 
                  Sync Status

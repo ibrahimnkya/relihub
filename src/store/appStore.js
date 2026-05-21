@@ -3,10 +3,14 @@ import { systemService } from '../services/systemService'
 
 export const useAppStore = create((set, get) => ({
   sidebarCollapsed: false,
+  mobileMenuOpen: false,
   platformModules: [],
   
   setSidebarCollapsed: (collapsed) => set({ sidebarCollapsed: collapsed }),
   toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
+  setMobileMenuOpen: (open) => set({ mobileMenuOpen: open }),
+  toggleMobileMenu: () => set((state) => ({ mobileMenuOpen: !state.mobileMenuOpen })),
+  closeMobileMenu: () => set({ mobileMenuOpen: false }),
   
   setPlatformModules: (modules) => set({ platformModules: modules }),
   

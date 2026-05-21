@@ -3,7 +3,7 @@ import { ShieldAlert } from 'lucide-react'
 const AccessRestricted = ({ moduleName, moduleCode }) => {
   return (
     <div className="h-[calc(100vh-140px)] flex items-center justify-center p-6">
-      <div className="bg-brand-card border border-brand-border p-12 rounded-[32px] max-w-md text-center space-y-6 shadow-2xl relative overflow-hidden">
+      <div className="bg-brand-card border border-brand-border p-6 sm:p-12 rounded-[20px] sm:rounded-[32px] max-w-md mx-4 text-center space-y-6 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-brand-red opacity-20"></div>
         <div className="h-20 w-20 bg-brand-red/10 text-brand-red rounded-full flex items-center justify-center mx-auto animate-pulse">
           <ShieldAlert size={40} className="text-brand-red" />

@@ -37,7 +37,7 @@ const EscalationMatrixModal = ({ alert, onClose }) => {
   return createPortal(
     <div className="fixed inset-0 z-[1000] flex justify-end">
       <div className="absolute inset-0 bg-brand-navy/60 backdrop-blur-sm animate-fade-in" onClick={onClose}></div>
-      <div className="relative w-full max-w-[500px] bg-white h-full shadow-2xl flex flex-col animate-slide-in-right overflow-hidden">
+      <div className="relative w-full sm:max-w-[500px] bg-white h-full max-h-[100dvh] shadow-2xl flex flex-col animate-slide-in-right overflow-hidden">
         {/* Header */}
         <div className="p-6 bg-brand-blue text-white flex items-center justify-between">
           <div className="flex items-center gap-4">
