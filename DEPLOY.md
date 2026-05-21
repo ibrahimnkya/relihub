@@ -1,72 +1,57 @@
-# Docker deployment (main branch)
+# Docker deployment (main branch — frontend only)
 
-Production stack: **PostgreSQL** + **Express API** + **Nginx** (React SPA built at image build time).
+Production on **main** ships only the **React SPA** behind Nginx. The API runs elsewhere (default: `https://mafuta.mysafari.co.tz/api`).
+
+No PostgreSQL or Express containers are started from this compose file.
 
 ## Prerequisites
 
 - Docker Engine 24+ and Docker Compose v2
-- Ports **80** (app), **3060** (API, optional direct access), **5432** (DB, optional) available
+- Port **80** (or `HTTP_PUBLISH_PORT`) available
+- A reachable backend API at `VITE_API_BASE_URL`
 
 ## Quick start
 
 ```bash
 cp .env.example .env
-# Edit .env — set POSTGRES_PASSWORD (and ports if needed)
+# Optional: set VITE_API_BASE_URL and HTTP_PUBLISH_PORT
 
 docker compose up -d --build
 ```
 
-Open **http://localhost** (or your host on `HTTP_PUBLISH_PORT`).
+Open **http://localhost** (or your configured port).
 
-- UI → Nginx on port 80  
-- API → proxied at `/api/*` → `backend:3060`  
-- Health → `http://localhost:3060/health` (backend), DB via compose healthcheck  
+## Build-time configuration
 
-## Services
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `VITE_API_BASE_URL` | `https://mafuta.mysafari.co.tz/api` | Axios base URL baked into the build |
+| `VITE_USE_MOCK` | `false` | Always live API in production images |
 
-| Service   | Container      | Role                                      |
-|-----------|----------------|-------------------------------------------|
-| `db`      | `reli-db`      | PostgreSQL 16, schema from `server/init.sql` |
-| `backend` | `reli-backend` | Node/Express API on 3060                  |
-| `frontend`| `reli-frontend`| Nginx serves Vite build, proxies `/api`   |
+Change `VITE_API_BASE_URL` in `.env` **before** `docker compose build` — Vite inlines env vars at build time.
 
-## Main-branch production scope
+## Main-branch UI scope
 
-The frontend image is built from **main** routes only (Operations Hub, Tanks, Flow Meters, Fueling Sessions, Incidents, User Access Control, Settings). Dev-only modules are not routed in production.
-
-Build-time env (set in `docker-compose.yml`):
-
-- `VITE_API_BASE_URL=/api` — browser calls same-origin API  
-- `VITE_USE_MOCK=false` — live backend only  
+Routes on **main**: Operations Hub, Tanks, Flow Meters, Fueling Sessions, Incidents, User Access Control, Settings. Dev-only modules redirect to the dashboard.
 
 ## Operations
 
 ```bash
-# Logs
 docker compose logs -f
-
-# Rebuild after code changes
-docker compose up -d --build
-
-# Stop and remove containers (keeps DB volume)
+docker compose up -d --build   # after code or .env API URL changes
 docker compose down
-
-# Stop and wipe database volume
-docker compose down -v
 ```
 
-## Server deployment notes
+## Server notes
 
-1. Set strong `POSTGRES_PASSWORD` in `.env`; do not commit `.env`.
-2. Consider not publishing `DB_PUBLISH_PORT` on public hosts (remove or bind to `127.0.0.1` in compose overrides).
-3. Put TLS in front of Nginx (reverse proxy or load balancer terminating HTTPS).
-4. First boot runs `server/init.sql` once when the `pgdata` volume is empty.
+1. Put TLS in front of Nginx (reverse proxy or load balancer).
+2. Ensure the API allows CORS from your frontend origin if the API is on another host.
+3. Local backend development remains available via `pnpm dev` (not part of this Docker stack).
 
 ## Troubleshooting
 
 | Issue | Check |
 |-------|--------|
-| 502 on `/api` | `docker compose ps` — backend must be healthy |
-| Blank UI | `docker compose logs frontend` — build errors |
-| DB connection errors | `docker compose logs db backend` — wait for db healthy |
-| Port in use | Change `HTTP_PUBLISH_PORT` / `API_PUBLISH_PORT` in `.env` |
+| Blank UI | `docker compose logs frontend` |
+| API / auth errors | `VITE_API_BASE_URL`, CORS, network from container host |
+| Port in use | Change `HTTP_PUBLISH_PORT` in `.env` |

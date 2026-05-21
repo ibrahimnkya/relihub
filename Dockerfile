@@ -1,4 +1,4 @@
-# Stage 1: Build React frontend (production / main branch routes)
+# Build React frontend (main branch — production routes only)
 FROM node:20-alpine AS build
 
 WORKDIR /app
@@ -11,14 +11,14 @@ COPY index.html vite.config.js postcss.config.js tailwind.config.js eslint.confi
 COPY public ./public
 COPY src ./src
 
-ARG VITE_API_BASE_URL=/api
+# Baked in at build time; browser calls external API (no bundled backend)
+ARG VITE_API_BASE_URL=https://mafuta.mysafari.co.tz/api
 ARG VITE_USE_MOCK=false
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 ENV VITE_USE_MOCK=$VITE_USE_MOCK
 
 RUN npm run build
 
-# Stage 2: Serve static assets behind Nginx (proxies /api to backend)
 FROM nginx:1.25-alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf

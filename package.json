@@ -10,9 +10,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "docker:up": "docker compose up -d --build",
+    "docker:up": "docker compose up -d --build frontend",
     "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f"
+    "docker:logs": "docker compose logs -f frontend"
   },
   "dependencies": {
     "@hugeicons/react": "^1.1.6",
