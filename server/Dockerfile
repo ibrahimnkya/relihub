@@ -2,17 +2,15 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy dependency definition files
-COPY package*.json ./
+COPY package.json ./
 
-# Install only production dependencies for smaller image footprints
-RUN npm ci --only=production
+RUN npm install --omit=dev
 
-# Copy backend source files
 COPY . .
 
-# Expose backend PORT
 EXPOSE 3060
 
-# Boot command
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:3060/health || exit 1
+
 CMD ["node", "index.js"]

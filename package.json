@@ -9,7 +9,10 @@
     "dev": "concurrently \"pnpm dev:ui\" \"pnpm dev:server\"",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
   },
   "dependencies": {
     "@hugeicons/react": "^1.1.6",

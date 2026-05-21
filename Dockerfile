@@ -1,35 +1,32 @@
-# Stage 1: Build stage
+# Stage 1: Build React frontend (production / main branch routes)
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package configuration files
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
-# Install frontend dependencies
 RUN npm ci
 
-# Copy frontend source files
-COPY . .
+COPY index.html vite.config.js postcss.config.js tailwind.config.js eslint.config.js ./
+COPY public ./public
+COPY src ./src
 
-# Set dynamic configuration parameters at build time
 ARG VITE_API_BASE_URL=/api
 ARG VITE_USE_MOCK=false
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 ENV VITE_USE_MOCK=$VITE_USE_MOCK
 
-# Compile Vite production build bundle
 RUN npm run build
 
-# Stage 2: Serve stage with secure and optimized Nginx server
+# Stage 2: Serve static assets behind Nginx (proxies /api to backend)
 FROM nginx:1.25-alpine
 
-# Copy optimized nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy build output to Nginx root directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://127.0.0.1/ || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]

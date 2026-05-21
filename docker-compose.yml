@@ -1,49 +1,50 @@
-version: '3.8'
-
 services:
-  # Database Service (PostgreSQL 16)
   db:
     image: postgres:16-alpine
     container_name: reli-db
     restart: unless-stopped
-    ports:
-      - "5432:5432"
     environment:
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: reli_db
+      POSTGRES_USER: ${POSTGRES_USER:-dev}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-reli_db}
+    ports:
+      - "${DB_PUBLISH_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      # Automatically initialize database schema and core seeds on first boot
-      - ./server/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./server/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dev -d reli_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dev} -d ${POSTGRES_DB:-reli_db}"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 10s
 
-  # Express Backend API Service
   backend:
     build:
       context: ./server
       dockerfile: Dockerfile
     container_name: reli-backend
     restart: unless-stopped
-    ports:
-      - "3060:3060"
     environment:
-      DB_USER: dev
+      DB_USER: ${POSTGRES_USER:-dev}
       DB_HOST: db
-      DB_NAME: reli_db
-      DB_PASSWORD: postgres
+      DB_NAME: ${POSTGRES_DB:-reli_db}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       DB_PORT: 5432
       PORT: 3060
       NODE_ENV: production
+    ports:
+      - "${API_PUBLISH_PORT:-3060}:3060"
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3060/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
-  # Frontend Nginx Gateway Service
   frontend:
     build:
       context: .
@@ -54,10 +55,10 @@ services:
     container_name: reli-frontend
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "${HTTP_PUBLISH_PORT:-80}:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
 
 volumes:
   pgdata:
-    driver: local
